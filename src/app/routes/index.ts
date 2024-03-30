@@ -18,4 +18,10 @@ router.get(
   travelBuddyController.getTravelBuddyById,
 );
 
+router.put(
+  '/travel-buddies/:buddyId/respond',
+  auth(),
+  travelBuddyController.updateTravelBuddy,
+);
+
 export default router;

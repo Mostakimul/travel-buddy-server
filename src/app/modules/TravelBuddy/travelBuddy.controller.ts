@@ -20,6 +20,20 @@ const getTravelBuddyById: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const updateTravelBuddy: RequestHandler = catchAsync(async (req, res) => {
+  const { buddyId } = req.params;
+
+  const result = await travelBuddyService.updateTravelBuddy(buddyId, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Travel buddy request responded successfully',
+    data: result,
+  });
+});
+
 export const travelBuddyController = {
   getTravelBuddyById,
+  updateTravelBuddy,
 };

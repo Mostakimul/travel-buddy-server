@@ -35,6 +35,24 @@ const getTravelBuddyByTripId = async (tripId: string, payload: JwtPayload) => {
   return result;
 };
 
+const updateTravelBuddy = async (buddyId: string, reqBody: any) => {
+  await prisma.buddyRequest.findUniqueOrThrow({
+    where: {
+      id: buddyId,
+    },
+  });
+
+  const result = await prisma.buddyRequest.update({
+    where: {
+      id: buddyId,
+    },
+    data: reqBody,
+  });
+
+  return result;
+};
+
 export const travelBuddyService = {
   getTravelBuddyByTripId,
+  updateTravelBuddy,
 };
