@@ -32,3 +32,69 @@ JWT_REFRESH_EXPIRE_IN="30d"
 ```
 yarn dev
 ```
+
+# Travel Buddy API
+
+Travel buddy is web server api where you can add your trip and find a travel buddy who can join you!
+
+## Technologies Used
+
+- Prisma
+- Node.js
+- Express.js
+- Postgres
+- Typescript
+- zod
+- bcrypt (for password hashing)
+- JSON Web Tokens (JWT) for authentication
+
+## API Endpoints
+
+### Authentication
+
+- **Register User**
+
+  - Method: POST
+  - Path: `/api/register`
+
+- **Login User**
+  - Method: POST
+  - Path: `/api/login`
+
+### Trips
+
+- **Create Trip**
+
+  - Method: POST
+  - Path: `/api/trips`
+
+- **Get All Trips**
+  - Method: GET
+  - Path: `/api/trips`
+
+### Travel Buddies
+
+- **Request Travel Buddy for Trip**
+
+  - Method: POST
+  - Path: `/api/trip/:tripId/request`
+
+- **Get Travel Buddy by ID**
+
+  - Method: GET
+  - Path: `/api/travel-buddies/:tripId`
+
+- **Respond to Travel Buddy Request**
+  - Method: PUT
+  - Path: `/api/travel-buddies/:buddyId/respond`
+
+### User Profile
+
+- **Get User Profile**
+
+  - Method: GET
+  - Path: `/api/profile`
+
+- **Update User Profile**
+  - Method: PUT
+  - Path: `/api/profile`
