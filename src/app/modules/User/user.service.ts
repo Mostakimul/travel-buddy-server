@@ -107,8 +107,29 @@ const getUserProfile = async (userInfo: JwtPayload) => {
   return result;
 };
 
+const updateProfile = async (userInfo: JwtPayload, payload: any) => {
+  const { email } = userInfo;
+
+  const result = await prisma.user.update({
+    where: {
+      email,
+    },
+    data: payload,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  return result;
+};
+
 export const userService = {
   createUserService,
   loginService,
   getUserProfile,
+  updateProfile,
 };

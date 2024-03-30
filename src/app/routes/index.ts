@@ -25,4 +25,6 @@ router.put(
 );
 
 router.get('/profile', auth(), userController.getProfile);
+
+router.put('/profile', auth(), userController.updateProfile);
 export default router;
