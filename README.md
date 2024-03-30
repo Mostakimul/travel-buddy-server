@@ -1,5 +1,7 @@
 ## How to Run Locally
 
+##### Live Link: https://tr-buddy-mostakimuls-projects.vercel.app/
+
 ### Clone the repository:
 
 ```
