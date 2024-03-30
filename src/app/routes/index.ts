@@ -9,4 +9,6 @@ router.post('/register', userController.createUser);
 router.post('/login', userController.loginUser);
 router.post('/trips', auth(), tripController.createTrip);
 
+router.get('/trips', tripController.getAllTrips);
+
 export default router;
