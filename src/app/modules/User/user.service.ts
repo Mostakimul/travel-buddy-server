@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import httpStatus from 'http-status';
-import { Secret } from 'jsonwebtoken';
+import { JwtPayload, Secret } from 'jsonwebtoken';
 import { jwtHelper } from '../../../helpers/jwtHelper';
 import prisma from '../../../shared/prisma';
 import { config } from '../../config';
@@ -84,10 +84,31 @@ const loginService = async (payload: { email: string; password: string }) => {
     name: userData.name,
     email: userData.email,
     token: accessToken,
+    refreshToken,
   };
+};
+
+const getUserProfile = async (userInfo: JwtPayload) => {
+  const { email } = userInfo;
+
+  const result = await prisma.user.findUniqueOrThrow({
+    where: {
+      email,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  return result;
 };
 
 export const userService = {
   createUserService,
   loginService,
+  getUserProfile,
 };

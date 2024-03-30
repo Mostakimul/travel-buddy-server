@@ -24,4 +24,5 @@ router.put(
   travelBuddyController.updateTravelBuddy,
 );
 
+router.get('/profile', auth(), userController.getProfile);
 export default router;
