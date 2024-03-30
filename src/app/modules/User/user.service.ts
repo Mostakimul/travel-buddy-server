@@ -1,5 +1,10 @@
 import * as bcrypt from 'bcrypt';
+import httpStatus from 'http-status';
+import { Secret } from 'jsonwebtoken';
+import { jwtHelper } from '../../../helpers/jwtHelper';
 import prisma from '../../../shared/prisma';
+import { config } from '../../config';
+import ApiError from '../../errors/ApiError';
 import { TUser } from '../../interfaces/userInterface';
 
 const createUserService = async (payload: TUser) => {
@@ -39,6 +44,50 @@ const createUserService = async (payload: TUser) => {
   };
 };
 
+const loginService = async (payload: { email: string; password: string }) => {
+  const { email, password } = payload;
+  const userData = await prisma.user.findUniqueOrThrow({
+    where: {
+      email,
+    },
+  });
+
+  const isPasswordCorrect: boolean = await bcrypt.compare(
+    password,
+    userData.password,
+  );
+
+  if (!isPasswordCorrect) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Password is incorrect!');
+  }
+
+  const accessToken = jwtHelper.generateToken(
+    {
+      email: userData.email,
+      name: userData.name,
+    },
+    config.jwt_secret_key as Secret,
+    config.jwt_expire_in as string,
+  );
+
+  const refreshToken = jwtHelper.generateToken(
+    {
+      email: userData.email,
+      name: userData.name,
+    },
+    config.jwt_refresh_secret_key as Secret,
+    config.jwt_refresh_expire_in as string,
+  );
+
+  return {
+    id: userData.id,
+    name: userData.name,
+    email: userData.email,
+    token: accessToken,
+  };
+};
+
 export const userService = {
   createUserService,
+  loginService,
 };
