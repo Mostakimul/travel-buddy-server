@@ -6,20 +6,26 @@ const profileSchema = z.object({
 });
 
 const createUserSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
-  password: z.string(),
-  profile: profileSchema,
+  body: z.object({
+    name: z.string(),
+    email: z.string().email(),
+    password: z.string(),
+    profile: profileSchema,
+  }),
 });
 
 const updateUserSchema = z.object({
-  name: z.string().optional(),
-  email: z.string().email().optional(),
+  body: z.object({
+    name: z.string().optional(),
+    email: z.string().email().optional(),
+  }),
 });
 
 const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
+  body: z.object({
+    email: z.string().email(),
+    password: z.string(),
+  }),
 });
 export const userValidation = {
   createUserSchema,
