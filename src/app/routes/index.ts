@@ -1,5 +1,6 @@
 import express from 'express';
 import auth from '../middlewares/auth';
+import { travelBuddyController } from '../modules/TravelBuddy/travelBuddy.controller';
 import { tripController } from '../modules/Trip/trip.controller';
 import { userController } from '../modules/User/user.controller';
 
@@ -11,5 +12,10 @@ router.post('/trips', auth(), tripController.createTrip);
 
 router.get('/trips', tripController.getAllTrips);
 router.post('/trip/:tripId/request', auth(), tripController.travelBuddyRequest);
+router.get(
+  '/travel-buddies/:tripId',
+  auth(),
+  travelBuddyController.getTravelBuddyById,
+);
 
 export default router;
