@@ -8,7 +8,7 @@ const createUser: RequestHandler = catchAsync(async (req, res) => {
   const result = await userService.createUserService(req.body);
 
   sendResponse(res, {
-    statusCode: httpStatus.OK,
+    statusCode: httpStatus.CREATED,
     success: true,
     message: 'User registered successfully',
     data: result,
