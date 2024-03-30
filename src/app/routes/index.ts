@@ -10,5 +10,6 @@ router.post('/login', userController.loginUser);
 router.post('/trips', auth(), tripController.createTrip);
 
 router.get('/trips', tripController.getAllTrips);
+router.post('/trip/:tripId/request', auth(), tripController.travelBuddyRequest);
 
 export default router;

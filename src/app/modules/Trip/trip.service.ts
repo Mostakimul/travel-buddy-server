@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, RequestStatus } from '@prisma/client';
 import { JwtPayload } from 'jsonwebtoken';
 import { paginationHelper } from '../../../helpers/paginationHelper';
 import prisma from '../../../shared/prisma';
@@ -85,7 +85,26 @@ const getAllTripsService = async (params: any, options: IPaginationOptions) => {
   };
 };
 
+const travelBuddyRequestService = async (tripId: string, userId: string) => {
+  const userData = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+  });
+
+  const result = await prisma.buddyRequest.create({
+    data: {
+      userId,
+      tripId,
+      status: RequestStatus.PENDING,
+    },
+  });
+
+  return result;
+};
+
 export const tripService = {
   createTripService,
   getAllTripsService,
+  travelBuddyRequestService,
 };
