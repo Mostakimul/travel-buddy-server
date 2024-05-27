@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsnd --respawn --transpile-only src/server.ts",
+    "seed": "tsnd --respawn --transpile-only prisma/seed.ts",
     "build": "tsc",
     "start": "node ./dist/server.js",
     "postinstall": "prisma generate"
