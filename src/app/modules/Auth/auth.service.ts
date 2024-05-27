@@ -97,7 +97,7 @@ const changePassword = async (
     },
   });
 
-  if (userData?.password !== oldPassword) {
+  if (!bcrypt.compare(oldPassword, userData?.password)) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Old password is incorrect');
   }
 

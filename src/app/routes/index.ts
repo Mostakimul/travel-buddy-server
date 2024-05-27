@@ -1,11 +1,8 @@
 import express from 'express';
 import { authRoutes } from '../modules/Auth/auth.routes';
+import { tripRoutes } from '../modules/Trip/trip.routes';
 import { userRoutes } from '../modules/User/user.routes';
 
-// router.post('/trips', auth(), tripController.createTrip);
-
-// router.get('/trips', tripController.getAllTrips);
-// router.post('/trip/:tripId/request', auth(), tripController.travelBuddyRequest);
 // router.get(
 //   '/travel-buddies/:tripId',
 //   auth(),
@@ -28,6 +25,10 @@ const moduleRoutes = [
   {
     path: '/auth',
     route: authRoutes,
+  },
+  {
+    path: '/trip',
+    route: tripRoutes,
   },
 ];
 

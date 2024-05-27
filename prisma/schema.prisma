@@ -47,16 +47,22 @@ model User {
   @@map("users")
 }
 
+enum TripStatus {
+  ACTIVE
+  DEACTIVE
+}
+
 model Trip {
-  id          String   @id @unique @default(uuid())
+  id          String     @id @unique @default(uuid())
   userId      String
   destination String
   startDate   String
   endDate     String
   budget      Int
+  tripStatus  TripStatus @default(ACTIVE)
   activities  String[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   user         User           @relation(fields: [userId], references: [id])
   BuddyRequest BuddyRequest[]
