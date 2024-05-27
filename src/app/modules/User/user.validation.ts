@@ -1,3 +1,4 @@
+import { UserRole } from '@prisma/client';
 import { z } from 'zod';
 
 const profileSchema = z.object({
@@ -10,7 +11,7 @@ const createUserSchema = z.object({
     name: z.string(),
     email: z.string().email(),
     password: z.string(),
-    profile: profileSchema,
+    profile: profileSchema.optional(),
   }),
 });
 
@@ -27,8 +28,16 @@ const loginSchema = z.object({
     password: z.string(),
   }),
 });
+
+const changeRoleValidation = z.object({
+  body: z.object({
+    email: z.string().email(),
+    role: z.enum([UserRole.ADMIN, UserRole.USER]),
+  }),
+});
 export const userValidation = {
   createUserSchema,
   loginSchema,
   updateUserSchema,
+  changeRoleValidation,
 };

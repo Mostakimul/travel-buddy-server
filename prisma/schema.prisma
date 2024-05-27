@@ -14,11 +14,30 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  USER
+}
+
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+}
+
 model User {
   id           String         @id @unique @default(uuid())
   name         String
   email        String         @unique
   password     String
+  role         UserRole       @default(USER)
+  status       UserStatus     @default(ACTIVE)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   userProfile  UserProfile?
@@ -43,12 +62,6 @@ model Trip {
   BuddyRequest BuddyRequest[]
 
   @@map("trips")
-}
-
-enum RequestStatus {
-  PENDING
-  APPROVED
-  REJECTED
 }
 
 model BuddyRequest {
