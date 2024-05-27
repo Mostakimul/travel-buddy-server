@@ -118,6 +118,14 @@ const travelBuddyRequestService = async (tripId: string, user: JwtPayload) => {
       tripId,
       status: RequestStatus.PENDING,
     },
+    include: {
+      trip: {
+        include: {
+          user: true,
+        },
+      },
+      user: true,
+    },
   });
 
   return result;
@@ -143,11 +151,7 @@ const updateTripService = async (
     },
   });
 
-  if (
-    tripData.userId !== userData.id &&
-    user.role !== UserRole.ADMIN &&
-    user.role !== UserRole.SUPER_ADMIN
-  ) {
+  if (tripData.userId !== userData.id && user.role === UserRole.USER) {
     throw new ApiError(
       httpStatus.FORBIDDEN,
       'You are not authorized to update!',

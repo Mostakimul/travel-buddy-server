@@ -1,19 +1,8 @@
 import express from 'express';
 import { authRoutes } from '../modules/Auth/auth.routes';
+import { travelBuddyRoutes } from '../modules/TravelBuddy/travelBuddy.routes';
 import { tripRoutes } from '../modules/Trip/trip.routes';
 import { userRoutes } from '../modules/User/user.routes';
-
-// router.get(
-//   '/travel-buddies/:tripId',
-//   auth(),
-//   travelBuddyController.getTravelBuddyById,
-// );
-
-// router.put(
-//   '/travel-buddies/:buddyId/respond',
-//   auth(),
-//   travelBuddyController.updateTravelBuddy,
-// );
 
 const router = express.Router();
 
@@ -29,6 +18,10 @@ const moduleRoutes = [
   {
     path: '/trip',
     route: tripRoutes,
+  },
+  {
+    path: '/travel-buddy',
+    route: travelBuddyRoutes,
   },
 ];
 
