@@ -35,9 +35,8 @@ const getAllTrips: RequestHandler = catchAsync(async (req, res) => {
 
 const travelBuddyRequest: RequestHandler = catchAsync(async (req, res) => {
   const { tripId } = req.params;
-  const { userId } = req.body;
 
-  const result = await tripService.travelBuddyRequestService(tripId, userId);
+  const result = await tripService.travelBuddyRequestService(tripId, req.user);
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
@@ -47,8 +46,40 @@ const travelBuddyRequest: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const updateTrip: RequestHandler = catchAsync(async (req, res) => {
+  const { tripId } = req.params;
+
+  const result = await tripService.updateTripService(
+    tripId,
+    req.body,
+    req.user,
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: 'Trip updated successfully',
+    data: result,
+  });
+});
+
+const getSingleTrip: RequestHandler = catchAsync(async (req, res) => {
+  const { tripId } = req.params;
+
+  const result = await tripService.getSingleTripService(tripId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: 'Trip retrived successfully',
+    data: result,
+  });
+});
+
 export const tripController = {
   createTrip,
   getAllTrips,
   travelBuddyRequest,
+  updateTrip,
+  getSingleTrip,
 };

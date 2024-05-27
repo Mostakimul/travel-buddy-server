@@ -1,8 +1,17 @@
-import { Prisma, RequestStatus } from '@prisma/client';
+import {
+  Prisma,
+  RequestStatus,
+  Trip,
+  TripStatus,
+  UserRole,
+} from '@prisma/client';
+import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
 import { paginationHelper } from '../../../helpers/paginationHelper';
 import prisma from '../../../shared/prisma';
+import ApiError from '../../errors/ApiError';
 import { IPaginationOptions } from '../../interfaces/pagination';
+import { TTrip } from '../../interfaces/trip.type';
 import { tripSearchFields } from './trip.constant';
 
 const createTripService = async (payload: TTrip, user: JwtPayload) => {
@@ -14,8 +23,11 @@ const createTripService = async (payload: TTrip, user: JwtPayload) => {
 
   const result = await prisma.trip.create({
     data: {
-      userId: userData?.id,
+      userId: userData.id,
       ...payload,
+    },
+    include: {
+      user: true,
     },
   });
 
@@ -46,6 +58,10 @@ const getAllTripsService = async (params: any, options: IPaginationOptions) => {
     });
   }
 
+  andConditions.push({
+    tripStatus: TripStatus.ACTIVE,
+  });
+
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
       AND: Object.keys(filterData).map((key) => ({
@@ -69,6 +85,10 @@ const getAllTripsService = async (params: any, options: IPaginationOptions) => {
         : {
             createdAt: 'desc',
           },
+    include: {
+      user: true,
+      buddyRequest: true,
+    },
   });
 
   const total = await prisma.trip.count({
@@ -85,18 +105,80 @@ const getAllTripsService = async (params: any, options: IPaginationOptions) => {
   };
 };
 
-const travelBuddyRequestService = async (tripId: string, userId: string) => {
+const travelBuddyRequestService = async (tripId: string, user: JwtPayload) => {
   const userData = await prisma.user.findUniqueOrThrow({
     where: {
-      id: userId,
+      email: user.email,
     },
   });
 
   const result = await prisma.buddyRequest.create({
     data: {
-      userId,
+      userId: userData.id,
       tripId,
       status: RequestStatus.PENDING,
+    },
+  });
+
+  return result;
+};
+
+const updateTripService = async (
+  tripId: string,
+  payload: Partial<Trip>,
+  user: JwtPayload,
+) => {
+  const tripData = await prisma.trip.findUniqueOrThrow({
+    where: {
+      id: tripId,
+    },
+    include: {
+      user: true,
+    },
+  });
+
+  const userData = await prisma.user.findFirstOrThrow({
+    where: {
+      email: user.email,
+    },
+  });
+
+  if (
+    tripData.userId !== userData.id &&
+    user.role !== UserRole.ADMIN &&
+    user.role !== UserRole.SUPER_ADMIN
+  ) {
+    throw new ApiError(
+      httpStatus.FORBIDDEN,
+      'You are not authorized to update!',
+    );
+  }
+
+  const result = await prisma.trip.update({
+    where: {
+      id: tripId,
+    },
+    data: {
+      ...payload,
+    },
+    include: {
+      user: true,
+      buddyRequest: true,
+    },
+  });
+
+  return result;
+};
+
+const getSingleTripService = async (tripId: string) => {
+  const result = await prisma.trip.findUniqueOrThrow({
+    where: {
+      id: tripId,
+      tripStatus: TripStatus.ACTIVE,
+    },
+    include: {
+      user: true,
+      buddyRequest: true,
     },
   });
 
@@ -107,4 +189,6 @@ export const tripService = {
   createTripService,
   getAllTripsService,
   travelBuddyRequestService,
+  updateTripService,
+  getSingleTripService,
 };
