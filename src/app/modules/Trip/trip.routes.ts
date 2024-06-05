@@ -15,6 +15,11 @@ router.post(
 );
 
 router.get('/', tripController.getAllTrips);
+router.get(
+  '/deactive',
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.USER),
+  tripController.getAllDeactiveTrips,
+);
 router.get('/:tripId', tripController.getSingleTrip);
 
 router.post(

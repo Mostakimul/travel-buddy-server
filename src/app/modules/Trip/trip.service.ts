@@ -34,6 +34,83 @@ const createTripService = async (payload: TTrip, user: JwtPayload) => {
   return result;
 };
 
+const getAllDeactiveTripsService = async (
+  params: any,
+  options: IPaginationOptions,
+) => {
+  const { searchTerm, ...filterData } = params;
+
+  const { page, limit, sortBy, sortOrder, skip } =
+    paginationHelper.calculatePagination(options);
+
+  const andConditions: Prisma.TripWhereInput[] = [];
+
+  // coverting budget into int
+  if ('budget' in filterData) {
+    filterData.budget = parseInt(filterData.budget);
+  }
+
+  if (searchTerm) {
+    andConditions.push({
+      OR: tripSearchFields.map((field) => ({
+        [field]: {
+          contains: searchTerm,
+          mode: 'insensitive',
+        },
+      })),
+    });
+  }
+
+  andConditions.push({
+    tripStatus: TripStatus.DEACTIVE,
+  });
+
+  if (Object.keys(filterData).length > 0) {
+    andConditions.push({
+      AND: Object.keys(filterData).map((key) => ({
+        [key]: {
+          equals: (filterData as any)[key],
+        },
+      })),
+    });
+  }
+
+  const whereConditions: Prisma.TripWhereInput =
+    andConditions.length > 0 ? { AND: andConditions } : {};
+
+  const result = await prisma.trip.findMany({
+    where: whereConditions,
+    skip,
+    take: limit,
+    orderBy:
+      sortBy && sortOrder
+        ? { [sortBy]: sortOrder }
+        : {
+            createdAt: 'desc',
+          },
+    include: {
+      user: true,
+      buddyRequest: {
+        include: {
+          user: true,
+        },
+      },
+    },
+  });
+
+  const total = await prisma.trip.count({
+    where: whereConditions,
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  };
+};
 const getAllTripsService = async (params: any, options: IPaginationOptions) => {
   const { searchTerm, ...filterData } = params;
 
@@ -87,7 +164,11 @@ const getAllTripsService = async (params: any, options: IPaginationOptions) => {
           },
     include: {
       user: true,
-      buddyRequest: true,
+      buddyRequest: {
+        include: {
+          user: true,
+        },
+      },
     },
   });
 
@@ -182,7 +263,11 @@ const getSingleTripService = async (tripId: string) => {
     },
     include: {
       user: true,
-      buddyRequest: true,
+      buddyRequest: {
+        include: {
+          user: true,
+        },
+      },
     },
   });
 
@@ -195,4 +280,5 @@ export const tripService = {
   travelBuddyRequestService,
   updateTripService,
   getSingleTripService,
+  getAllDeactiveTripsService,
 };

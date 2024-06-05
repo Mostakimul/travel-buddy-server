@@ -33,6 +33,25 @@ const getAllTrips: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const getAllDeactiveTrips: RequestHandler = catchAsync(async (req, res) => {
+  const finalQuery = pick(req.query, tripFilterableFields);
+
+  const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+
+  const result = await tripService.getAllDeactiveTripsService(
+    finalQuery,
+    options,
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Trips retrieved successfully',
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
 const travelBuddyRequest: RequestHandler = catchAsync(async (req, res) => {
   const { tripId } = req.params;
 
@@ -82,4 +101,5 @@ export const tripController = {
   travelBuddyRequest,
   updateTrip,
   getSingleTrip,
+  getAllDeactiveTrips,
 };

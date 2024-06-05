@@ -101,6 +101,7 @@ const getUserProfile = async (userInfo: JwtPayload) => {
       name: true,
       role: true,
       status: true,
+      userProfile: true,
       email: true,
       createdAt: true,
       updatedAt: true,
@@ -380,6 +381,8 @@ const updateUserService = async (payload: any) => {
   const userData = {
     name,
   };
+
+  console.log(profile);
 
   const result = await prisma.$transaction(async (transactionClient) => {
     const updatedUserData = await transactionClient.user.update({
