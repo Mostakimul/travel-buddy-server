@@ -59,6 +59,12 @@ router.get(
 );
 
 router.get(
+  '/:id',
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.USER),
+  userController.getSingleUser,
+);
+
+router.get(
   '/',
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
   userController.getAllUsers,

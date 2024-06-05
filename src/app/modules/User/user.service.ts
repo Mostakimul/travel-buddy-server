@@ -109,6 +109,25 @@ const getUserProfile = async (userInfo: JwtPayload) => {
 
   return result;
 };
+const getSingleUser = async (id: string) => {
+  const result = await prisma.user.findUniqueOrThrow({
+    where: {
+      id,
+      status: UserStatus.ACTIVE,
+    },
+    select: {
+      id: true,
+      name: true,
+      role: true,
+      status: true,
+      email: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  return result;
+};
 
 const getBlockedUserService = async (
   params: any,
@@ -369,4 +388,5 @@ export const userService = {
   blockUserServivce,
   unblockUserServivce,
   getBlockedUserService,
+  getSingleUser,
 };
