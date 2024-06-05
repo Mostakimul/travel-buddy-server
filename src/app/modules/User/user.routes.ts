@@ -34,6 +34,13 @@ router.put(
 );
 
 router.put(
+  '/update',
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  validateRequest(userValidation.updateUserSchema),
+  userController.updateUser,
+);
+
+router.put(
   '/change-role',
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
   validateRequest(userValidation.changeRoleValidation),

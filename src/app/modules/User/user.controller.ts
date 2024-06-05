@@ -61,6 +61,17 @@ const updateProfile: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const updateUser: RequestHandler = catchAsync(async (req, res) => {
+  const result = await userService.updateUserService(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User updated successfully',
+    data: result,
+  });
+});
+
 //** get all user controller */
 const getAllUsers: RequestHandler = catchAsync(async (req, res) => {
   const finalQuery = pick(req.query, userFilterableFields);
@@ -135,4 +146,5 @@ export const userController = {
   unblockUser,
   getBlockUsers,
   getSingleUser,
+  updateUser,
 };

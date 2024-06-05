@@ -374,6 +374,47 @@ const unblockUserServivce = async (payload: any) => {
   return updatedUser;
 };
 
+const updateUserService = async (payload: any) => {
+  const { email, name, ...profile } = payload;
+
+  const userData = {
+    name,
+  };
+
+  const result = await prisma.$transaction(async (transactionClient) => {
+    const updatedUserData = await transactionClient.user.update({
+      where: {
+        email,
+      },
+      data: userData,
+    });
+    if (Object.keys(profile).length !== 0) {
+      const { bio, age } = profile.profile;
+      await transactionClient.userProfile.update({
+        where: {
+          userId: updatedUserData.id,
+        },
+        data: {
+          bio,
+          age,
+        },
+      });
+    }
+
+    return updatedUserData;
+  });
+
+  return {
+    id: result.id,
+    name: result.name,
+    email: result.email,
+    role: result.role,
+    status: result.status,
+    createdAt: result.createdAt,
+    updatedAt: result.updatedAt,
+  };
+};
+
 export const userService = {
   createUserService,
   createAdminService,
@@ -385,4 +426,5 @@ export const userService = {
   unblockUserServivce,
   getBlockedUserService,
   getSingleUser,
+  updateUserService,
 };
