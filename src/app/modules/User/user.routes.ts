@@ -53,6 +53,12 @@ router.put(
 );
 
 router.get(
+  '/blocked',
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  userController.getBlockUsers,
+);
+
+router.get(
   '/',
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
   userController.getAllUsers,

@@ -65,6 +65,21 @@ const getAllUsers: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+//** get blocked user controller */
+const getBlockUsers: RequestHandler = catchAsync(async (req, res) => {
+  const finalQuery = pick(req.query, userFilterableFields);
+  const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+
+  const result = await userService.getBlockedUserService(finalQuery, options);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Blocked users retrived successfully!',
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
 //** change role controller */
 const changeRole: RequestHandler = catchAsync(async (req, res) => {
   const result = await userService.changeRoleServivce(req.body);
@@ -107,4 +122,5 @@ export const userController = {
   changeRole,
   blockUser,
   unblockUser,
+  getBlockUsers,
 };
