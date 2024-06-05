@@ -115,18 +115,14 @@ const getSingleUser = async (id: string) => {
       id,
       status: UserStatus.ACTIVE,
     },
-    select: {
-      id: true,
-      name: true,
-      role: true,
-      status: true,
-      email: true,
-      createdAt: true,
-      updatedAt: true,
+    include: {
+      userProfile: true,
     },
   });
 
-  return result;
+  const { password, ...userWithoutPassword } = result;
+
+  return userWithoutPassword;
 };
 
 const getBlockedUserService = async (
