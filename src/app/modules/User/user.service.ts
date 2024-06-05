@@ -382,8 +382,6 @@ const updateUserService = async (payload: any) => {
     name,
   };
 
-  console.log(profile);
-
   const result = await prisma.$transaction(async (transactionClient) => {
     const updatedUserData = await transactionClient.user.update({
       where: {

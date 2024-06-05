@@ -5,13 +5,13 @@
 ### Clone the repository:
 
 ```
-git clone https://github.com/Porgramming-Hero-web-course/l2-b2-fullstack-track-assignment-8-Mostakimul
+git clone https://github.com/Mostakimul/travel-buddy-server.git
 ```
 
 ### Install dependencies:
 
 ```
-cd l2-b2-fullstack-track-assignment-8-Mostakimul
+cd travel-buddy-server
 yarn install
 ```
 
@@ -50,53 +50,6 @@ Travel buddy is web server api where you can add your trip and find a travel bud
 - bcrypt (for password hashing)
 - JSON Web Tokens (JWT) for authentication
 
-## API Endpoints
+## API Documentation
 
-### Authentication
-
-- **Register User**
-
-  - Method: POST
-  - Path: `/api/register`
-
-- **Login User**
-  - Method: POST
-  - Path: `/api/login`
-
-### Trips
-
-- **Create Trip**
-
-  - Method: POST
-  - Path: `/api/trips`
-
-- **Get All Trips**
-  - Method: GET
-  - Path: `/api/trips`
-
-### Travel Buddies
-
-- **Request Travel Buddy for Trip**
-
-  - Method: POST
-  - Path: `/api/trip/:tripId/request`
-
-- **Get Travel Buddy by ID**
-
-  - Method: GET
-  - Path: `/api/travel-buddies/:tripId`
-
-- **Respond to Travel Buddy Request**
-  - Method: PUT
-  - Path: `/api/travel-buddies/:buddyId/respond`
-
-### User Profile
-
-- **Get User Profile**
-
-  - Method: GET
-  - Path: `/api/profile`
-
-- **Update User Profile**
-  - Method: PUT
-  - Path: `/api/profile`
+- https://documenter.getpostman.com/view/16306758/2sA3QzZU32
