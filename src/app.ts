@@ -11,7 +11,7 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://travel-budyy-client-fkjypunsp-mostakimuls-projects.vercel.app',
+      'https://travel-budyy-client.vercel.app/',
       '*',
     ],
     credentials: true,
