@@ -1,6 +1,10 @@
 ## How to Run Locally
 
-##### Live Link: https://tr-buddy-mostakimuls-projects.vercel.app/
+##### Backend API Link: https://travel-buddy-server-smoky.vercel.app/
+
+##### Frontend Link:
+
+##### Frontend Repo Link: https://github.com/Mostakimul/travel-budyy-client
 
 ### Clone the repository:
 
