@@ -1,8 +1,8 @@
 ## How to Run Locally
 
-##### Backend API Link: https://travel-buddy-server-smoky.vercel.app/
+##### Backend API Link: https://travel-buddy-server-sigma.vercel.app/api/v1
 
-##### Frontend Link:
+##### Frontend Link: https://travel-budyy-client.vercel.app/
 
 ##### Frontend Repo Link: https://github.com/Mostakimul/travel-budyy-client
 

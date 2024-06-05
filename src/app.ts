@@ -7,16 +7,6 @@ import router from './app/routes';
 
 const app: Application = express();
 
-app.use(
-  cors({
-    origin: [
-      'http://localhost:3000',
-      'https://travel-budyy-client.vercel.app/',
-      '*',
-    ],
-    credentials: true,
-  }),
-);
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -24,6 +14,17 @@ app.use(
   }),
 );
 app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: [
+      'http://localhost:3000',
+      'https://travel-budyy-client.vercel.app',
+      '*',
+    ],
+    credentials: true,
+  }),
+);
 
 app.get('/', (req: Request, res: Response) => {
   res.send({
